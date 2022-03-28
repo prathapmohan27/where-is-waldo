@@ -1,5 +1,5 @@
 import { NavBar, ImgContainer, Img, LeaderButton, Figure } from './HeaderStyle';
-import lois from '../assets/lois.jpg';
+import lois from '../assets/lois.png';
 import ferb from '../assets/ferb.png';
 import waldo from '../assets/waldo.png';
 const Header = () => {

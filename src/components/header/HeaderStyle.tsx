@@ -22,13 +22,14 @@ export const ImgContainer = styled(Flex)`
 
 export const Figure = styled.figure`
   text-align: center;
-  margin-right: 0.5rem;
+  margin-right: 0.2rem;
 `;
 
 export const Img = styled.img`
   border-radius: 50%;
   width: 6rem;
   height: 6rem;
+  object-fit: contain;
 `;
 
 export const LeaderButton = styled.button`
