@@ -21,7 +21,7 @@ export const Main = styled.main`
   height: 15rem;
   text-align: center;
   padding: 2rem;
-  background-color: #4c4d69;
+  background-image: linear-gradient(#4c4d69, #03078a);
   color: white;
   border-radius: 0.5rem;
   h1 {

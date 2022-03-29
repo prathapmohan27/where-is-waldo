@@ -11,9 +11,10 @@ export const NavBar = styled(Flex)`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #4c4d69;
+  background-color: #2a2d38;
   padding: 0 1rem;
   color: white;
+  z-index: 1;
 `;
 
 export const ImgContainer = styled(Flex)`

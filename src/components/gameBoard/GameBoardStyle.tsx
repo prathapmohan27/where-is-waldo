@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const Img = styled.img`
   width: 100%;
   height: auto;
+  cursor: cell;
 `;
 
 export const Main = styled.main`
