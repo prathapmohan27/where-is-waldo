@@ -9,7 +9,7 @@ export const Ul = styled.div<coordinateInterface>`
   display: ${(props) => (props.left ? 'block' : 'none')};
   left: ${(props) => (props.left ? `${props.left}px` : '0')};
   top: ${(props) => (props.top ? `${props.top}px` : '0')};
-  background-color: white;
+  background-color: transparent;
   margin: 0;
   list-style: none;
   li {
@@ -18,5 +18,11 @@ export const Ul = styled.div<coordinateInterface>`
     cursor: pointer;
     font-weight: 800;
     background-color: #ded3d3;
+  }
+  div {
+    height: 40px;
+    width: 40px;
+    background-color: transparent;
+    border: 0.1rem solid white;
   }
 `;
