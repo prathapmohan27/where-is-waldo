@@ -1,11 +1,39 @@
-import { NavBar, ImgContainer, Img, LeaderButton, Figure } from './HeaderStyle';
+import { useEffect, useState } from 'react';
+
+import { NavBar, ImgContainer, Timer, Img, Figure } from './HeaderStyle';
 import lois from '../assets/lois.png';
 import ferb from '../assets/ferb.png';
 import waldo from '../assets/waldo.png';
-const Header = () => {
+
+interface propsInterface {
+  isTimer: boolean;
+}
+
+const Header = ({ isTimer }: propsInterface) => {
+  const [sec, setSec] = useState<number>(0);
+  const [mins, setMins] = useState<number>(0);
+
+  useEffect(() => {
+    let timer;
+    if (isTimer) {
+      timer = setInterval(() => {
+        setSec((prevTime) => prevTime + 1);
+      }, 1000);
+    } else {
+      clearInterval(timer);
+    }
+  }, [isTimer]);
+
+  useEffect(() => {
+    if (sec === 60) {
+      setMins((prevMins) => prevMins + 1);
+      setSec(0);
+    }
+  }, [mins, sec]);
+
   return (
     <NavBar>
-      <h1>Where is Waldo?</h1>
+      <h1>Find Us!</h1>
       <ImgContainer>
         <Figure>
           <Img src={lois} alt="lois" />
@@ -20,9 +48,11 @@ const Header = () => {
           <figcaption>Waldo</figcaption>
         </Figure>
       </ImgContainer>
-      <div>
-        <LeaderButton>Leader Bored</LeaderButton>
-      </div>
+      <Timer>
+        <h1>
+          {String(mins).padStart(2, '0')}:{String(sec).padStart(2, '0')}
+        </h1>
+      </Timer>
     </NavBar>
   );
 };

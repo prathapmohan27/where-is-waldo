@@ -1,13 +1,32 @@
 import React from 'react';
-import { Ul } from './TagStyle';
+import { Ul, Li } from './TagStyle';
 
-const Tag = ({ coordinate, handleTag }: any) => {
+interface propsInterface {
+  coordinate: {
+    x: Number;
+    y: Number;
+  };
+  handleTag(e: React.MouseEvent<HTMLLIElement>): void;
+  char: {
+    Lois: boolean;
+    Ferb: boolean;
+    Waldo: boolean;
+  };
+}
+
+const Tag = ({ coordinate, handleTag, char }: propsInterface) => {
   return (
     <Ul left={coordinate.x} top={coordinate.y}>
       <div></div>
-      <li>Lois</li>
-      <li>Ferb</li>
-      <li onClick={handleTag}>Waldo</li>
+      <Li disable={char.Lois} onClick={handleTag}>
+        Lois
+      </Li>
+      <Li disable={char.Ferb} onClick={handleTag}>
+        Ferb
+      </Li>
+      <Li disable={char.Waldo} onClick={handleTag}>
+        Waldo
+      </Li>
     </Ul>
   );
 };

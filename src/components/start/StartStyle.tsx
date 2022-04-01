@@ -13,7 +13,7 @@ export const Div = styled.div`
   left: 0;
   position: absolute;
   background-color: rgba(0, 0, 0, 0.6);
-  z-index: 1;
+  z-index: 10;
 `;
 
 export const Main = styled.main`

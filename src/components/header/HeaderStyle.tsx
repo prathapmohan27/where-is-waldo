@@ -33,13 +33,11 @@ export const Img = styled.img`
   object-fit: contain;
 `;
 
-export const LeaderButton = styled.button`
-  padding: 0.3rem 1rem;
+export const Timer = styled.button`
+  padding: 0 1rem;
   outline: none;
   font-weight: 800;
   font-size: 1.5rem;
   background-color: #06c3d4;
-  border: none;
-  cursor: pointer;
   border-radius: 0.5rem;
 `;
