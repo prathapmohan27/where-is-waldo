@@ -7,21 +7,25 @@ import waldo from '../assets/waldo.png';
 
 interface propsInterface {
   isTimer: boolean;
+  getTime(sec: number, mins: number): void;
 }
 
-const Header = ({ isTimer }: propsInterface) => {
+const Header = ({ isTimer, getTime }: propsInterface) => {
   const [sec, setSec] = useState<number>(0);
   const [mins, setMins] = useState<number>(0);
 
   useEffect(() => {
-    let timer;
-    if (isTimer) {
-      timer = setInterval(() => {
-        setSec((prevTime) => prevTime + 1);
-      }, 1000);
-    } else {
-      clearInterval(timer);
+    if (!isTimer) {
+      getTime(sec, mins);
+      return;
     }
+    const timer = setInterval(() => {
+      setSec((prevTime) => prevTime + 1);
+    }, 1000);
+    return () => {
+      clearInterval(timer);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isTimer]);
 
   useEffect(() => {
