@@ -1,43 +1,17 @@
-import { useEffect, useState } from 'react';
-
 import { NavBar, ImgContainer, Timer, Img, Figure } from './HeaderStyle';
 import lois from '../assets/lois.png';
 import ferb from '../assets/ferb.png';
 import waldo from '../assets/waldo.png';
 
 interface propsInterface {
-  isTimer: boolean;
-  getTime(sec: number, mins: number): void;
+  sec: number;
+  mins: number;
 }
 
-const Header = ({ isTimer, getTime }: propsInterface) => {
-  const [sec, setSec] = useState<number>(0);
-  const [mins, setMins] = useState<number>(0);
-
-  useEffect(() => {
-    if (!isTimer) {
-      getTime(sec, mins);
-      return;
-    }
-    const timer = setInterval(() => {
-      setSec((prevTime) => prevTime + 1);
-    }, 1000);
-    return () => {
-      clearInterval(timer);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isTimer]);
-
-  useEffect(() => {
-    if (sec === 60) {
-      setMins((prevMins) => prevMins + 1);
-      setSec(0);
-    }
-  }, [mins, sec]);
-
+const Header = ({ sec, mins }: propsInterface) => {
   return (
     <NavBar>
-      <h1>Find Us!</h1>
+      <h1>where is waldo ?</h1>
       <ImgContainer>
         <Figure>
           <Img src={lois} alt="lois" />

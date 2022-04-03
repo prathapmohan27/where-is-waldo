@@ -1,4 +1,5 @@
-import { useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useState } from 'react';
 import map from '../assets/map.jpg';
 import Tag from '../tag/Tag';
 import { Img, Div } from './GameBoardStyle';
@@ -7,9 +8,8 @@ interface coordinateInterface {
   x: Number;
   y: Number;
 }
-
 interface propsInterface {
-  getDiscoveredChar(char: String): void;
+  getDiscoveredChar(isDiscover: boolean): void;
   getResult(str: String): void;
 }
 
@@ -18,12 +18,31 @@ const GameBoard = ({ getDiscoveredChar, getResult }: propsInterface) => {
     x: 0,
     y: 0,
   });
-
   const [char, setChar] = useState({
     Lois: false,
     Ferb: false,
     Waldo: false,
   });
+  const [charName, setCharName] = useState<string>('');
+  const [isFind, setIsfind] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (Object.values(char).every((char) => char)) {
+      getDiscoveredChar(true);
+    }
+  }, [char]);
+
+  useEffect(() => {
+    if (isFind) {
+      getResult(`You Found ${charName}`);
+      UpdateDiscoveredChar({ [charName]: 'true' });
+    } else {
+      if (charName) {
+        getResult(`That's Not ${charName}`);
+      }
+    }
+    setCoordinate({ x: 0, y: 0 });
+  }, [isFind, charName]);
 
   const UpdateDiscoveredChar = (obj: any): void => {
     setChar({ ...char, ...obj });
@@ -36,21 +55,14 @@ const GameBoard = ({ getDiscoveredChar, getResult }: propsInterface) => {
   };
 
   const handleTag = (e: React.MouseEvent<HTMLLIElement>) => {
-    const charName = e.currentTarget.innerHTML;
+    setCharName(e.currentTarget.innerHTML);
     const { x, y } = coordinate;
     if (x >= 1000 && y >= 520) {
       if (x <= 1040 && y <= 610) {
-        getResult(`You Found ${charName}`);
-        setCoordinate({ x: 0, y: 0 });
-        UpdateDiscoveredChar({ [charName]: 'true' });
-        getDiscoveredChar(charName);
-      } else {
-        getResult(`That's Not ${charName}`);
-        setCoordinate({ x: 0, y: 0 });
+        setIsfind(true);
       }
     } else {
-      getResult(`That's Not ${charName}`);
-      setCoordinate({ x: 0, y: 0 });
+      setIsfind(false);
     }
   };
 

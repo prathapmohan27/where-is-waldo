@@ -6,6 +6,6 @@ import Header from './Header';
 
 // test('renders learn react link', () => {
 //   render(<Header />);
-//   const linkElement = screen.getByText(/hello/i);
+//   const linkElement = screen.getByText(/where is waldo ?/i);
 //   expect(linkElement).toBeInTheDocument();
 // });
