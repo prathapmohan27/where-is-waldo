@@ -22,19 +22,27 @@ export const savePlayer = async (
 
 export const getPlayersFirestore = async () => {
   let data: any[] = [];
-  const fetchPlayer = await getDocs(collection(getFirestore(), 'players'));
-  fetchPlayer.docs.forEach((doc) => {
-    data.push({ ...doc.data() });
-  });
+  try {
+    const fetchPlayer = await getDocs(collection(getFirestore(), 'players'));
+    fetchPlayer.docs.forEach((doc) => {
+      data.push({ ...doc.data() });
+    });
+  } catch (error) {
+    console.log(error);
+  }
   return data;
 };
 
 export const getCoordFirestore = async (name: string) => {
   let data;
-  const fetchData = await getDocs(collection(getFirestore(), `${name}`));
-  fetchData.docs.forEach((doc) => {
-    data = Object.assign({ ...doc.data() });
-  });
+  try {
+    const fetchData = await getDocs(collection(getFirestore(), `${name}`));
+    fetchData.docs.forEach((doc) => {
+      data = Object.assign({ ...doc.data() });
+    });
+  } catch (error) {
+    console.log(error);
+  }
   return data;
 };
 
