@@ -4,8 +4,9 @@ import '@testing-library/jest-dom';
 
 import Header from './Header';
 
-// test('renders learn react link', () => {
-//   render(<Header />);
-//   const linkElement = screen.getByText(/where is waldo ?/i);
-//   expect(linkElement).toBeInTheDocument();
-// });
+test('renders header component', () => {
+  render(<Header sec={22} mins={1} />);
+  expect(screen.getByText(/where is waldo ?/i)).toBeInTheDocument();
+  expect(screen.getByText(/ waldo/i)).toBeInTheDocument();
+  expect(screen.getByText('01:22')).toBeInTheDocument();
+});

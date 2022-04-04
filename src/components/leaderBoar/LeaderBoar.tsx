@@ -3,6 +3,7 @@ import React from 'react';
 import { Div } from '../start/StartStyle';
 import { Main, ListContainer, Form, Greeting } from './LeaderBoarStyle';
 import { getPlayersFirestore, savePlayer } from '../backend/backend';
+import List from './List';
 
 interface propsInterface {
   show: boolean;
@@ -32,15 +33,20 @@ const LeaderBoar = ({ show, sec, mins }: propsInterface) => {
   const submit = (e: any): void => {
     e.preventDefault();
     const totalTime = mins * 60 + sec;
-    savePlayer(name, mins, sec, totalTime);
+    if (name) {
+      savePlayer(name, mins, sec, totalTime);
+      setHide(true);
+    } else {
+      alert('would you pls enter name');
+      return;
+    }
     getAllPlayer();
-    setHide(true);
   };
 
   return (
     <Div show={show}>
       <Main>
-        <h1>LeaderBoard</h1>
+        <h1>Leader Board</h1>
         <h1>
           {String(mins).padStart(2, '0')}:{String(sec).padStart(2, '0')}
         </h1>
@@ -59,17 +65,8 @@ const LeaderBoar = ({ show, sec, mins }: propsInterface) => {
         </Greeting>
         <h1>HIGH SCORES</h1>
         <ListContainer>
-          {players.map((obj: any, i: any) => {
-            return (
-              <li key={i}>
-                <span>{`${i + 1}.`}</span>
-                <span>{obj.name}</span>
-                <span>
-                  {String(obj.mins).padStart(2, '0')}:
-                  {String(obj.sec).padStart(2, '0')}
-                </span>
-              </li>
-            );
+          {players.map((obj: any, i: number) => {
+            return <List key={i} obj={obj} i={i} />;
           })}
         </ListContainer>
       </Main>
