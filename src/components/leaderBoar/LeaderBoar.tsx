@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import React from 'react';
 import { Div } from '../start/StartStyle';
 import { Main, ListContainer, Form, Greeting } from './LeaderBoarStyle';
+import { getPlayersFirestore, savePlayer } from '../backend/backend';
 
 interface propsInterface {
   show: boolean;
@@ -10,8 +11,19 @@ interface propsInterface {
 }
 
 const LeaderBoar = ({ show, sec, mins }: propsInterface) => {
-  const [name, setName] = useState<String>('');
+  const [name, setName] = useState<string>('');
   const [hide, setHide] = useState<boolean>(false);
+  const [players, setPlayers] = useState<any>([]);
+
+  useEffect(() => {
+    getAllPlayer();
+  }, []);
+
+  const getAllPlayer = async () => {
+    const data = await getPlayersFirestore();
+    data.sort((a, b) => a.totalTime - b.totalTime);
+    setPlayers([...data]);
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setName(e.target.value);
@@ -19,7 +31,9 @@ const LeaderBoar = ({ show, sec, mins }: propsInterface) => {
 
   const submit = (e: any): void => {
     e.preventDefault();
-    console.log(name);
+    const totalTime = mins * 60 + sec;
+    savePlayer(name, mins, sec, totalTime);
+    getAllPlayer();
     setHide(true);
   };
 
@@ -45,36 +59,18 @@ const LeaderBoar = ({ show, sec, mins }: propsInterface) => {
         </Greeting>
         <h1>HIGH SCORES</h1>
         <ListContainer>
-          <li>
-            <span>1.</span>
-            <span>sfdsrf</span>
-            <span>11:33</span>
-          </li>
-          <li>
-            <span>1.</span>
-            <span>sfdsrf</span>
-            <span>11:33</span>
-          </li>
-          <li>
-            <span>1.</span>
-            <span>sfdsrf</span>
-            <span>11:33</span>
-          </li>
-          <li>
-            <span>1.</span>
-            <span>sfdsrf</span>
-            <span>11:33</span>
-          </li>
-          <li>
-            <span>1.</span>
-            <span>sfdsrf</span>
-            <span>11:33</span>
-          </li>
-          <li>
-            <span>1.</span>
-            <span>sfdsrf</span>
-            <span>11:33</span>
-          </li>
+          {players.map((obj: any, i: any) => {
+            return (
+              <li key={i}>
+                <span>{`${i + 1}.`}</span>
+                <span>{obj.name}</span>
+                <span>
+                  {String(obj.mins).padStart(2, '0')}:
+                  {String(obj.sec).padStart(2, '0')}
+                </span>
+              </li>
+            );
+          })}
         </ListContainer>
       </Main>
     </Div>

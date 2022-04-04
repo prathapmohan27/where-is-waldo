@@ -3,11 +3,20 @@ import { useEffect, useState } from 'react';
 import map from '../assets/map.jpg';
 import Tag from '../tag/Tag';
 import { Img, Div } from './GameBoardStyle';
+import { getCoordFirestore } from '../backend/backend';
 
 interface coordinateInterface {
   x: Number;
   y: Number;
 }
+
+interface fetchCoordinateInterface {
+  bottomX: number;
+  bottomY: number;
+  topX: Number;
+  topY: Number;
+}
+
 interface propsInterface {
   getDiscoveredChar(isDiscover: boolean): void;
   getResult(str: String): void;
@@ -23,26 +32,12 @@ const GameBoard = ({ getDiscoveredChar, getResult }: propsInterface) => {
     Ferb: false,
     Waldo: false,
   });
-  const [charName, setCharName] = useState<string>('');
-  const [isFind, setIsfind] = useState<boolean>(false);
 
   useEffect(() => {
     if (Object.values(char).every((char) => char)) {
       getDiscoveredChar(true);
     }
   }, [char]);
-
-  useEffect(() => {
-    if (isFind) {
-      getResult(`You Found ${charName}`);
-      UpdateDiscoveredChar({ [charName]: 'true' });
-    } else {
-      if (charName) {
-        getResult(`That's Not ${charName}`);
-      }
-    }
-    setCoordinate({ x: 0, y: 0 });
-  }, [isFind, charName]);
 
   const UpdateDiscoveredChar = (obj: any): void => {
     setChar({ ...char, ...obj });
@@ -54,16 +49,24 @@ const GameBoard = ({ getDiscoveredChar, getResult }: propsInterface) => {
     setCoordinate({ x, y });
   };
 
-  const handleTag = (e: React.MouseEvent<HTMLLIElement>) => {
-    setCharName(e.currentTarget.innerHTML);
+  const handleTag = async (e: React.MouseEvent<HTMLLIElement>) => {
+    const charName = e.currentTarget.innerHTML;
+    const fetchCoord: fetchCoordinateInterface | any = await getCoordFirestore(
+      charName
+    );
+    let { bottomX, bottomY, topX, topY } = fetchCoord;
     const { x, y } = coordinate;
-    if (x >= 1000 && y >= 520) {
-      if (x <= 1040 && y <= 610) {
-        setIsfind(true);
+    if (x >= topX && y >= topY) {
+      if (x <= bottomX && y <= bottomY) {
+        getResult(`You Found ${charName}`);
+        UpdateDiscoveredChar({ [charName]: 'true' });
+      } else {
+        getResult(`That's Not ${charName}`);
       }
     } else {
-      setIsfind(false);
+      getResult(`That's Not ${charName}`);
     }
+    setCoordinate({ x: 0, y: 0 });
   };
 
   return (
